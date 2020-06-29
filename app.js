@@ -1,5 +1,7 @@
-const express = require('express')
-const app = express()
-app.listen( process.env.port || 4000,function(){
-    console.log('listening on port 4000')
-})
+const express = require('express');
+const app = express();
+
+const morgan = require('morgan');
+const bodyparser = require('body-parser');
+const multer = require('multer');
+const mongoose = require('mongoose');

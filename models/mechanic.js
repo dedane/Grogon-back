@@ -7,17 +7,15 @@ const MechanicSchema = mongoose.Schema({
     mechanicPic: {type: String, required: true},
     phonenumber: {type: Number, required: true},
     passwords: {type: String, required: true},
-    geometry: GeoSchema
-})
-const GeoSchema = new mongoose.Schema({
-    type: {
+    Geometry: {type: {
         type: String,
         default: "Point"
     },
     coordinates: {
         type: [Number],
         index: "2dsphere"
-    }
+    }}
 })
+
 
 module.exports = mongoose.model('Mechanic', MechanicSchema);

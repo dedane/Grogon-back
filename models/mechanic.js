@@ -1,12 +1,23 @@
 const mongoose = require('mongoose');
 
-const mechanicSchema = mongoose.Schema({
+const MechanicSchema = mongoose.Schema({
     _Id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true},
     certificate: {type: String, required: true},
     mechanicPic: {type: String, required: true},
     phonenumber: {type: Number, required: true},
-    passwords: {type: String, required: true}
+    passwords: {type: String, required: true},
+    geometry: GeoSchema
+})
+const GeoSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        default: "Point"
+    },
+    coordinates: {
+        type: [Number],
+        index: "2dsphere"
+    }
 })
 
-module.exports = mongoose.model('Mechanic', mechanicSchema);
+module.exports = mongoose.model('Mechanic', MechanicSchema);

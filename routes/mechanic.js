@@ -4,3 +4,6 @@ const mongoose = require('mongoose')
 const multer = require('multer')
 const checkAuth = require('../middleware/check-auth')
 const Mechanic = require('../models/mechanic');
+
+
+module.exports = router;

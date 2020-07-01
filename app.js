@@ -9,14 +9,15 @@ const cors = require('cors')
 
 const driverRoute = require('./routes/driver')
 const mechanicRoute = require('./routes/mechanic')
+const userRoute = require('./routes/mechanic')
 /* require('dotenv').config(); */
 
 mongoose.Promise = require('bluebird')
-mongoose.connect("mongodb+srv://grogon: grogon123 @cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://grogon:AisnH0P6axGB2DD6@cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-/* mongoose.set('UseCreateIndex',true) */
+// mongoose.set('UseCreateIndex',true) 
 
 const conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'))
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 
 app.use('/driver', driverRoute)
 app.use('/mechanic', mechanicRoute)
+app.use('/user', userRoute)
 
 app.use((req,res,next) =>{
     const error = new Error('Not Found')

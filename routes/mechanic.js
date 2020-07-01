@@ -50,5 +50,50 @@ router.post('/register ', (req,res,next) => {
         }
     })
 })
+router.get('/mechanicsLocation', (req,res,next) =>{
+    Mechanic.geoNear(
+        {type: 'Point',
+        coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]},
+        {maxDistance: 10000,
+        spherical: true}
+    ).then(function(Mechanic){
+        res.send(Mechanic)
+    })
+ })
+
+router.get('./:MechanicId', (req,res,next) => {
+    const Id = req.params.MechanicId
+    Mechanic.find({ MechanicId: Id })
+    .exec()
+    .then( doc => {
+        console.log(doc)
+        res.status(500).json(doc)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({ error: err})
+    })
+})
+
+router.delete('./:mechanicId', (req,res,next) => {
+    Mechanic.remove({
+        _id: req.params.mechanicId
+    })
+    .exec()
+    .then( result => {
+        res.status(200).json({
+            message: 'Mechanic Deleted',
+            request: {
+                type: 'POST',
+                url: 'https://localhost:3000/Drivers',
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: err
+        })
+    })
+})
 
 module.exports = router;

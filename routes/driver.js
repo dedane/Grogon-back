@@ -100,7 +100,6 @@ router.delete('./:driverId', (req,res,next) => {
             request: {
                 type: 'POST',
                 url: 'https://localhost:3000/Drivers',
-                body: { productId: 'ID', quantity: 'Number'}
             }
         })
     })

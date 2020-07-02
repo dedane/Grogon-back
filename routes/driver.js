@@ -2,16 +2,17 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const multer = require('multer')
-const checkAuth = require('../middleware/check-auth')
+const jwt =require('jsonwebtoken')
+/* const bcrypt = require('bcrypt') */
 const Driver = require('../models/driver');
-const driver = require('../models/driver')
+
 
 
 router.post('/register', (req,res,next) => {
     Driver.find({ Email: req.body.Email })
     .exec()
-    .then(Driver => {
-        if (Driver.length >= 1){
+    .then(driver => {
+        if (driver.length >= 1){
             return res.status(409).json({
                 message: 'You already registered Driver'
             })
@@ -24,7 +25,7 @@ router.post('/register', (req,res,next) => {
                     })
                 }
                 else{
-                    const Driver = new Driver({
+                    const driver = new Driver({
                         _id: new mongoose.Types.ObjectId(),
                         Email: req.body.Email,
                         Password: hash,
@@ -35,7 +36,7 @@ router.post('/register', (req,res,next) => {
                         PurchaseDate: req.body.PurchaseDate,
                         VehicleImage: req.body.VehicleImage
                     })
-                Driver.save()
+                driver.save()
                 .then(result => {
                     console.log(result)
                     res.status(201).json({

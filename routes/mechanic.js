@@ -50,6 +50,51 @@ router.post('/register ', (req,res,next) => {
         }
     })
 })
+
+router.post('/login', (req,res,next) => {
+    Mechanic.find({ email: req.body.email })
+        .exec()
+        .then(user => {
+            if (Mechanic.length < 1){
+                return res.status(401).json({
+                    message: 'Auth Failed'
+                })
+            }
+            bcrypt.compare(req.body.password, Mechanic[0].password, (err,result) => {
+                if (err) {
+                    return res.status(401).json({
+                        message: 'Auth Failed'
+                    })
+                }
+                if (result){
+                    const token = jwt.sign({
+                        email: Mechanic[0].email,
+                        _id: Mechanic[0]._id
+                    }, process.env.JWT_KEY,
+                    {
+                        expiresIn: '24h'
+                    }
+                  )
+                  return res.status(200).json({
+                      message: 'Auth successful',
+                      token: token,
+                      email: Mechanic[0].email,
+                      _id: Mechanic[0]._id
+                  })
+                }
+                res.status(401).json({
+                    message: 'Auth failed'
+                })
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        })
+})
+
 router.get('/mechanicsLocation', (req,res,next) =>{
     Mechanic.geoNear(
         {type: 'Point',

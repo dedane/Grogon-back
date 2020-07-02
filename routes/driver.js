@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const multer = require('multer')
 const checkAuth = require('../middleware/check-auth')
 const Driver = require('../models/driver');
+const driver = require('../models/driver')
 
 
 router.post('/register', (req,res,next) => {
@@ -52,6 +53,50 @@ router.post('/register', (req,res,next) => {
         }
     })
 
+})
+
+router.post('/login', (req,res,next) => {
+    Driver.find({ email: req.body.email })
+        .exec()
+        .then(driver => {
+            if (Driver.length < 1){
+                return res.status(401).json({
+                    message: 'Auth Failed'
+                })
+            }
+            bcrypt.compare(req.body.password, Driver[0].password, (err,result) => {
+                if (err) {
+                    return res.status(401).json({
+                        message: 'Auth Failed'
+                    })
+                }
+                if (result){
+                    const token = jwt.sign({
+                        email: Driver[0].email,
+                        _id: Driver[0]._id
+                    }, process.env.JWT_KEY,
+                    {
+                        expiresIn: '24h'
+                    }
+                  )
+                  return res.status(200).json({
+                      message: 'Auth successful',
+                      token: token,
+                      email: Driver[0].email,
+                      _id: Driver[0]._id
+                  })
+                }
+                res.status(401).json({
+                    message: 'Auth failed'
+                })
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        })
 })
 
 router.get('/driverslocation', function(req,res,next){

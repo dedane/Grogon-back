@@ -13,11 +13,13 @@ const userRoute = require('./routes/mechanic')
 /* require('dotenv').config(); */
 
 mongoose.Promise = require('bluebird')
+
 mongoose.connect("mongodb+srv://grogon:AisnH0P6axGB2DD6@cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
-// mongoose.set('UseCreateIndex',true) 
+ 
 
 const conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'))

@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const multer = require('multer')
 const jwt =require('jsonwebtoken')
-/* const bcrypt = require('bcrypt') */
+const bcrypt = require('bcrypt')
 const Driver = require('../models/driver');
 
 

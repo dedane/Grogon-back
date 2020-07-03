@@ -53,7 +53,7 @@ router.post('/register', (req,res,next) => {
 })
 
 router.post('/login', (req,res,next) => {
-    Mechanic.find({ Email: req.body.email })
+    Mechanic.find({ Email: req.body.Email })
         .exec()
         .then(mechanic => {
             if (mechanic.length < 1){
@@ -69,7 +69,7 @@ router.post('/login', (req,res,next) => {
                 }
                 if (result){
                     const token = jwt.sign({
-                        Email: mechanic[0].email,
+                        Email: mechanic[0].Email,
                         _id: mechanic[0]._id
                     }, process.env.JWT_KEY,
                     {

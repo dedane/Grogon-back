@@ -9,8 +9,13 @@ const cors = require('cors')
 
 const driverRoute = require('./routes/driver')
 const mechanicRoute = require('./routes/mechanic')
+
 const userRoute = require('./routes/mechanic')
 require('dotenv').config();
+
+
+/* require('dotenv').config(); */
+
 
 mongoose.Promise = require('bluebird')
 
@@ -49,7 +54,7 @@ app.use((req, res, next) => {
 
 app.use('/driver', driverRoute)
 app.use('/mechanic', mechanicRoute)
-app.use('/user', userRoute)
+
 
 app.use((req,res,next) =>{
     const error = new Error('Not Found')
@@ -58,7 +63,7 @@ app.use((req,res,next) =>{
 })
 
 app.use((error, req,res,next) => {
-    res.status(err.status || 500)
+    res.status(error.status || 500)
     res.json({
         error: {
             message: error.message

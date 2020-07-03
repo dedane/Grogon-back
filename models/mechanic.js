@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
 const MechanicSchema = mongoose.Schema({
-    _Id: mongoose.Schema.Types.ObjectId,
-    name: {type: String, required: true},
-    certificate: {type: String, required: true},
-    mechanicPic: {type: String, required: true},
-    phonenumber: {type: Number, required: true},
-    passwords: {type: String, required: true},
+
+    _id: mongoose.Schema.Types.ObjectId,
+    Name: {type: String, required: true},
+    Email: {type: String, required: true},
+    Certificate: {type: String, required: true},
+    MechanicPic: {type: String, required: true},
+    Phonenumber: {type: Number, required: true},
+    Password: {type: String, required: true},
     Geometry: {type: {
         type: String,
         default: "Point"

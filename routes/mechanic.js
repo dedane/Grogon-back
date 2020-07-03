@@ -6,11 +6,11 @@ const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const Mechanic = require('../models/mechanic');
 
-router.post('/register ', (req,res,next) => {
+router.post('/register', (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
-    .then(Mechanic => {
-        if (Mechanic.length >= 1){
+    .then(mechanic => {
+        if (mechanic.length >= 1){
             return res.status(409).json({
                 message: 'You already are registered mechanic'
             })
@@ -19,21 +19,21 @@ router.post('/register ', (req,res,next) => {
             bcrypt.hash(req.body.Password, 10, (err,hash) => {
                 if (err){
                     return res.status(500).json({
-                        error: err
+                        error:err
                     })
                 }
                 else{
-                    const Mechanic =  new Mechanic({
+                    const mechanic =  new Mechanic({
                         _id: new mongoose.Types.ObjectId(),
-                        Email: req.body.Email,
-                        Password: hash,
-
                         Name: req.body.Name,
-                        phonenumber: req.body.phonenumber,
-                        certificate: req.body.certificate,
-                        mechanicPic: req.body.mechanicPic 
+                        Email: req.body.Email,
+
+                        Certificate: req.body.Certificate,
+                        MechanicPic: req.body.MechanicPic,
+                        Phonenumber: req.body.Phonenumber,
+                        Password: hash     
                     })
-                Mechanic.save()
+                mechanic.save()
                 .then(result => {
                     console.log(result)
                     res.status(201).json({
@@ -53,15 +53,15 @@ router.post('/register ', (req,res,next) => {
 })
 
 router.post('/login', (req,res,next) => {
-    Mechanic.find({ email: req.body.email })
+    Mechanic.find({ Email: req.body.email })
         .exec()
-        .then(user => {
-            if (Mechanic.length < 1){
+        .then(mechanic => {
+            if (mechanic.length < 1){
                 return res.status(401).json({
                     message: 'Auth Failed'
                 })
             }
-            bcrypt.compare(req.body.password, Mechanic[0].password, (err,result) => {
+            bcrypt.compare(req.body.Password, Mechanic[0].password, (err,result) => {
                 if (err) {
                     return res.status(401).json({
                         message: 'Auth Failed'
@@ -69,7 +69,7 @@ router.post('/login', (req,res,next) => {
                 }
                 if (result){
                     const token = jwt.sign({
-                        email: Mechanic[0].email,
+                        Email: Mechanic[0].email,
                         _id: Mechanic[0]._id
                     }, process.env.JWT_KEY,
                     {

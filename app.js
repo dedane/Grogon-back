@@ -10,11 +10,11 @@ const cors = require('cors')
 const driverRoute = require('./routes/driver')
 const mechanicRoute = require('./routes/mechanic')
 const userRoute = require('./routes/mechanic')
-/* require('dotenv').config(); */
+require('dotenv').config();
 
 mongoose.Promise = require('bluebird')
 
-mongoose.connect("mongodb+srv://grogon:AisnH0P6axGB2DD6@cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://grogon:" + process.env.MONGO_ATLAS_PW + "@cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true

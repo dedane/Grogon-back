@@ -46,7 +46,7 @@ router.post('/register', (req,res,next) => {
                 .catch(error => {
                     console.log(error)
                     res.status(500).json({
-                        eror: err
+                        error: err
                     })
                 })
                 }
@@ -57,15 +57,15 @@ router.post('/register', (req,res,next) => {
 })
 
 router.post('/login', (req,res,next) => {
-    Driver.find({ email: req.body.email })
+    Driver.find({ Email: req.body.Email })
         .exec()
         .then(driver => {
-            if (Driver.length < 1){
+            if (driver.length < 1){
                 return res.status(401).json({
                     message: 'Auth Failed'
                 })
             }
-            bcrypt.compare(req.body.password, Driver[0].password, (err,result) => {
+            bcrypt.compare(req.body.Password, driver[0].Password, (err,result) => {
                 if (err) {
                     return res.status(401).json({
                         message: 'Auth Failed'
@@ -73,8 +73,8 @@ router.post('/login', (req,res,next) => {
                 }
                 if (result){
                     const token = jwt.sign({
-                        email: Driver[0].email,
-                        _id: Driver[0]._id
+                        Email: driver[0].Email,
+                        _id: driver[0]._id
                     }, process.env.JWT_KEY,
                     {
                         expiresIn: '24h'
@@ -83,8 +83,8 @@ router.post('/login', (req,res,next) => {
                   return res.status(200).json({
                       message: 'Auth successful',
                       token: token,
-                      email: Driver[0].email,
-                      _id: Driver[0]._id
+                      Email: driver[0].Email,
+                      _id: driver[0]._id
                   })
                 }
                 res.status(401).json({

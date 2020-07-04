@@ -52,6 +52,10 @@ app.use((req, res, next) => {
     next()
 })
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname +'/index.html');
+})
+
 app.use('/driver', driverRoute)
 app.use('/mechanic', mechanicRoute)
 

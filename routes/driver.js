@@ -5,10 +5,10 @@ const multer = require('multer')
 const jwt =require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Driver = require('../models/driver');
-/* const cloudinary = require('cloudinary');
-const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
+const cloudinary = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-/* cloudinary.config({
+cloudinary.config({
     cloud_name: "dkq3tnpwu",
     api_key: "324383398255366",
     api_secret: "A6oe7AfxJejaSZEwdlt8wtK875E"
@@ -20,8 +20,9 @@ const storage = new CloudinaryStorage({
     allowedFormats: ["jpg","png"],
     transformation: [{ width: 500, height: 500, crop: "limit"}]
 });
-const parser = multer({ storage: storage }) */
-const storage = multer.diskStorage({
+
+const parser = multer({ storage: storage })
+/* const storage = multer.diskStorage({
     destination: function(req, file, cb){
       cb(null, './uploads/');
     },
@@ -30,10 +31,10 @@ const storage = multer.diskStorage({
     }
   });
   const upload = multer({storage: storage });
+ */
 
 
-
-router.post('/register', upload.single("VehicleImage"), (req,res,next) => {
+router.post('/register', parser.single("VehicleImage"), (req,res,next) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {
@@ -60,7 +61,7 @@ router.post('/register', upload.single("VehicleImage"), (req,res,next) => {
                         PurchaseDate: req.body.PurchaseDate,
                         /* const VehicleImage = {}, */
                         /* VehicleImage._id = req.file.VehicleImage_id, */
-                        VehicleImage: req.file.path
+                        VehicleImage: req.file.url
                     })
                 driver.save()
                 .then(result => {

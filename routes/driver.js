@@ -5,10 +5,26 @@ const multer = require('multer')
 const jwt =require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Driver = require('../models/driver');
+const cloudinary = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+    cloud_name: "dkq3tnpwu",
+    api_key: "324383398255366",
+    api_secret: "A6oe7AfxJejaSZEwdlt8wtK875E"
+})
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: "Profiles",
+    allowedFormats: ["jpg","png"],
+    transformation: [{ width: 500, height: 500, crop: "limit"}]
+});
+const parser = multer({ storage: storage })
 
 
 
-router.post('/register', (req,res,next) => {
+router.post('/register', parser.single("VehicleImage"), (req,res,next) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {
@@ -29,12 +45,13 @@ router.post('/register', (req,res,next) => {
                         _id: new mongoose.Types.ObjectId(),
                         Email: req.body.Email,
                         Password: hash,
-
                         Name: req.body.Name,
                         Phonenumber: req.body.Phonenumber,
                         Carmake: req.body.Carmake,
                         PurchaseDate: req.body.PurchaseDate,
-                        VehicleImage: req.body.VehicleImage
+                        /* const VehicleImage = {}, */
+                        /* VehicleImage._id = req.file.VehicleImage_id, */
+                        VehicleImage: req.file.url
                     })
                 driver.save()
                 .then(result => {

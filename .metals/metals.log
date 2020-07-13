@@ -1,0 +1,12 @@
+2020.07.10 16:15:51 INFO  started: Metals version 0.9.1 in workspace '/home/makashima/Documents/code/grogon-back'
+2020.07.10 16:15:56 INFO  time: initialize in 4.83s
+2020.07.10 16:16:01 WARN  no build tool detected in workspace '/home/makashima/Documents/code/grogon-back'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+Jul 10, 2020 7:09:41 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+2020.07.11 08:41:10 INFO  started: Metals version 0.9.1 in workspace '/home/makashima/Documents/code/grogon-back'
+2020.07.11 08:41:12 INFO  time: initialize in 1.92s
+2020.07.11 08:41:19 WARN  no build tool detected in workspace '/home/makashima/Documents/code/grogon-back'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.07.11 08:49:53 INFO  shutting down Metals
+2020.07.13 10:28:45 INFO  started: Metals version 0.9.1 in workspace '/home/makashima/Documents/code/grogon-back'
+2020.07.13 10:28:48 INFO  time: initialize in 2.7s
+2020.07.13 10:28:51 WARN  no build tool detected in workspace '/home/makashima/Documents/code/grogon-back'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 

@@ -10,7 +10,7 @@ const cors = require('cors')
 const driverRoute = require('./routes/driver')
 const mechanicRoute = require('./routes/mechanic')
 
-const userRoute = require('./routes/mechanic')
+/* const userRoute = require('./routes/mechanic') */
 require('dotenv').config();
 
 
@@ -33,6 +33,7 @@ conn.once('open',() => {
 })
 
 app.use(morgan('dev'))
+app.use('/uploads' ,express.static('uploads'));
 app.use(bodyparser.urlencoded({extended: false}))
 app.use(bodyparser.json())
 app.use(cors())

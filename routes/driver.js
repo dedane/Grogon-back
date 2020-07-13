@@ -34,7 +34,7 @@ const parser = multer({ storage: storage })
  */
 
 
-router.post('/register', parser.single("VehicleImage"), (req,res,next) => {
+router.post('/register', parser.single('VehicleImage'), (req,res,next) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {

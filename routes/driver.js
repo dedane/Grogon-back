@@ -41,7 +41,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter})
  */
 
 
-router.post('/register', upload.single('VehicleImage'), (req,res,next) => {
+router.post('/register',(req,res) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {
@@ -51,19 +51,21 @@ router.post('/register', upload.single('VehicleImage'), (req,res,next) => {
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10, (err,hash) => {
+            bcrypt.hash(req.body.Password, 10, async  (err,hash) => {
+                  
                 if (err){
                     return res.status(500).json({
                         error:err
                     })
                 }
                 else{
-                    cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
+                    /* cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
                         if(err) {
                           req.flash('error', err.message);
                           return res.redirect('back');
-                        }
+                        } */
                     const driver = new Driver({
+                        
                         _id: new mongoose.Types.ObjectId(),
                         Email: req.body.Email,
                         Password: hash,
@@ -74,10 +76,11 @@ router.post('/register', upload.single('VehicleImage'), (req,res,next) => {
                         /* const VehicleImage = {}, */
                         /* VehicleImage._id = req.file.VehicleImage_id, */
                         
-                        VehicleImage: req.result.url
+                        /* VehicleImage: result.secure_url */
                     })
                 
-                driver.save()
+                    driver.save()
+                
                 .then(result => {
                     console.log(result)
                     res.status(201).json({
@@ -90,12 +93,33 @@ router.post('/register', upload.single('VehicleImage'), (req,res,next) => {
                         error: err
                     })
                 })
-            })
                 }
             })
         }
     })
 
+})
+
+router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
+    const result = await cloudinary.v2.uploader.upload(req.file.path)
+    const id = req.params.Id;
+    await Driver.updateOne({ _id: id},
+    { $set: {VehicleImage: result.secure_url }}
+    )
+    .exec()
+    .then(result => {
+        console.log(result)
+        res.status(200)
+        .json({
+            message: "Successfull Updated"
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({
+                error: error
+            })
+        })
+    })
 })
 
 router.post('/login', (req,res,next) => {

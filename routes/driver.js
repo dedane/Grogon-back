@@ -6,7 +6,7 @@ const jwt =require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Driver = require('../models/driver');
 const cloudinary = require('cloudinary');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+/* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
 cloudinary.config({
     cloud_name: "dkq3tnpwu",
@@ -14,14 +14,21 @@ cloudinary.config({
     api_secret: "A6oe7AfxJejaSZEwdlt8wtK875E"
 })
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    folder: "Profiles",
-    allowedFormats: ["jpg","png"],
-    transformation: [{ width: 500, height: 500, crop: "limit"}]
-});
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+      callback(null, Date.now() + file.originalname);
+    }
+  });
+  var imageFilter = function (req, file, cb) {
+      // accept image files only
+      if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+          return cb(new Error('Only image files are allowed!'), false);
+      }
+      cb(null, true);
+  };
+var upload = multer({ storage: storage, fileFilter: imageFilter})
 
-const parser = multer({ storage: storage })
+
 /* const storage = multer.diskStorage({
     destination: function(req, file, cb){
       cb(null, './uploads/');
@@ -34,7 +41,7 @@ const parser = multer({ storage: storage })
  */
 
 
-router.post('/register', parser.single('VehicleImage'), (req,res,next) => {
+router.post('/register', upload.single('VehicleImage'), (req,res,next) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {
@@ -51,6 +58,11 @@ router.post('/register', parser.single('VehicleImage'), (req,res,next) => {
                     })
                 }
                 else{
+                    cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
+                        if(err) {
+                          req.flash('error', err.message);
+                          return res.redirect('back');
+                        }
                     const driver = new Driver({
                         _id: new mongoose.Types.ObjectId(),
                         Email: req.body.Email,
@@ -61,8 +73,10 @@ router.post('/register', parser.single('VehicleImage'), (req,res,next) => {
                         PurchaseDate: req.body.PurchaseDate,
                         /* const VehicleImage = {}, */
                         /* VehicleImage._id = req.file.VehicleImage_id, */
-                        VehicleImage: req.file.url
+                        
+                        VehicleImage: req.result.url
                     })
+                
                 driver.save()
                 .then(result => {
                     console.log(result)
@@ -76,6 +90,7 @@ router.post('/register', parser.single('VehicleImage'), (req,res,next) => {
                         error: err
                     })
                 })
+            })
                 }
             })
         }

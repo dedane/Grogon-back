@@ -5,8 +5,31 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const Mechanic = require('../models/mechanic');
+const cloudinary = require('cloudinary');
+/* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
-router.post('/register', (req,res,next) => {
+cloudinary.config({
+    cloud_name: "dkq3tnpwu",
+    api_key: "324383398255366",
+    api_secret: "A6oe7AfxJejaSZEwdlt8wtK875E"
+})
+
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+      callback(null, Date.now() + file.originalname);
+    }
+  });
+  var imageFilter = function (req, file, cb) {
+      // accept image files only
+      if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+          return cb(new Error('Only image files are allowed!'), false);
+      }
+      cb(null, true);
+  };
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+
+router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
     .then(mechanic => {
@@ -16,7 +39,8 @@ router.post('/register', (req,res,next) => {
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10, (err,hash) => {
+            bcrypt.hash(req.body.Password, 10, async (err,hash) => {
+                const result = await cloudinary.v2.uploader.upload(req.file.path)
                 if (err){
                     return res.status(500).json({
                         error:err
@@ -27,8 +51,8 @@ router.post('/register', (req,res,next) => {
                         _id: new mongoose.Types.ObjectId(),
                         Name: req.body.Name,
                         Email: req.body.Email,
-                        Certificate: req.body.Certificate,
-                        MechanicPic: req.body.MechanicPic,
+                        Certificate: result.secure_url,
+                        /* MechanicPic: result.secure_url, */
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
@@ -48,6 +72,28 @@ router.post('/register', (req,res,next) => {
                 }
             })
         }
+    })
+})
+
+router.patch('/register/:Id',upload.single('MechanicPic'), async(req,res) => {
+    const result = await cloudinary.v2.uploader.upload(req.file.path)
+    const id = req.params.Id;
+    await Mechanic.updateOne({ _id: id},
+    { $set: {MechanicPic: result.secure_url }}
+    )
+    .exec()
+    .then(result => {
+        console.log(result)
+        res.status(200)
+        .json({
+            message: "Successfull Updated"
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({
+                error: error
+            })
+        })
     })
 })
 

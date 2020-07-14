@@ -41,7 +41,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter})
  */
 
 
-router.post('/register',(req,res) => {
+router.post('/register',upload.single('VehicleImage'),(req,res) => {
     Driver.find({ Email: req.body.Email })
     .exec()
     .then(driver => {
@@ -52,7 +52,7 @@ router.post('/register',(req,res) => {
         }
         else {
             bcrypt.hash(req.body.Password, 10, async  (err,hash) => {
-                  
+                const result = await cloudinary.v2.uploader.upload(req.file.path)      
                 if (err){
                     return res.status(500).json({
                         error:err
@@ -76,10 +76,11 @@ router.post('/register',(req,res) => {
                         /* const VehicleImage = {}, */
                         /* VehicleImage._id = req.file.VehicleImage_id, */
                         
-                        /* VehicleImage: result.secure_url */
+                        VehicleImage: result.secure_url
                     })
-                
+                    
                     driver.save()
+                    
                 
                 .then(result => {
                     console.log(result)

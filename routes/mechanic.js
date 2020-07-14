@@ -27,7 +27,6 @@ router.post('/register', (req,res,next) => {
                         _id: new mongoose.Types.ObjectId(),
                         Name: req.body.Name,
                         Email: req.body.Email,
-
                         Certificate: req.body.Certificate,
                         MechanicPic: req.body.MechanicPic,
                         Phonenumber: req.body.Phonenumber,

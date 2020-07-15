@@ -39,19 +39,15 @@ app.use(bodyparser.json())
 app.use(cors())
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-requested-with, content-Type, Accept, Authorization"
-    )
-    if (req.method === 'Options'){
-        res.header("Access-control-Allow-Methods", 'PUT','POST', 'PATCH', 'DELETE', 'GET')
-        return res.status(200).json({
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-        })
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT', 'PATCH', 'POST', 'DELETE', 'GET');
+        return res.status(200).json({});
     }
-    next()
-})
+    next();
+});
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname +'/index.html');

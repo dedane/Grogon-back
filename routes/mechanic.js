@@ -29,10 +29,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 
-router.post('/register',upload.single('Certificate','MechanicPic'), async (req,res,next) => {
-    try {
-        const result =  await cloudinary.v2.uploader.upload(req.file.path)
-
+router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
     .then(mechanic => {
@@ -42,8 +39,8 @@ router.post('/register',upload.single('Certificate','MechanicPic'), async (req,r
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10,  (err,hash) => {
-            
+            bcrypt.hash(req.body.Password, 10,  async (err,hash) => {
+                const result =  await cloudinary.v2.uploader.upload(req.file.path)
                 
                 if (err){
                     return res.status(500).json({
@@ -80,10 +77,6 @@ router.post('/register',upload.single('Certificate','MechanicPic'), async (req,r
             })
         }
     })
-}
-catch(err){
-    next(err)
-}
 })
 
 router.patch('/register/:Id',upload.single('MechanicPic'), async(req,res) => {

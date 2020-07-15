@@ -5,8 +5,8 @@ const MechanicSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     Name: {type: String, required: true},
     Email: {type: String, required: true},
-    Certificate: {type: String, required: true},
-    MechanicPic: {type: String, required: false},
+    Certificate: {type: String, required: false},
+    MechanicPic: {type: String, required: true},
     Phonenumber: {type: Number, required: true},
     Password: {type: String, required: true},
     Geometry: {type: {

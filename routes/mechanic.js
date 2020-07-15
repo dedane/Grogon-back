@@ -29,7 +29,10 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 
-router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,next) => {
+router.post('/register',upload.single('Certificate','MechanicPic'), async (req,res,next) => {
+    try {
+        const result =  await cloudinary.v2.uploader.upload(req.file.path)
+
     Mechanic.find({ Email: req.body.Email })
     .exec()
     .then(mechanic => {
@@ -39,8 +42,9 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10, async (err,hash) => {
-                const result =  await cloudinary.v2.uploader.upload(req.file.path)
+            bcrypt.hash(req.body.Password, 10,  (err,hash) => {
+            
+                
                 if (err){
                     return res.status(500).json({
                         error:err
@@ -57,14 +61,15 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                return mechanic.save()
+                 mechanic.save()
                 .then(result => {
-                    return console.log(result)
+                     console.log(result)
                     res.status(201).json({
                         message: 'Successfully Registered'
                     })
                 })
-                .catch(error => {
+                
+                  .catch(error => {
                     console.log(error)
                     res.status(500).json({
                         error: err
@@ -75,6 +80,10 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
             })
         }
     })
+}
+catch(err){
+    next(err)
+}
 })
 
 router.patch('/register/:Id',upload.single('MechanicPic'), async(req,res) => {

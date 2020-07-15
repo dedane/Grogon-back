@@ -59,7 +59,7 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
                     })
                 return mechanic.save()
                 .then(result => {
-                    console.log(result)
+                    return console.log(result)
                     res.status(201).json({
                         message: 'Successfully Registered'
                     })

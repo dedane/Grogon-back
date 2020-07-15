@@ -6,7 +6,11 @@ const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const Mechanic = require('../models/mechanic');
 const cloudinary = require('cloudinary');
+const cors = require('cors');
+const app = require('../app')
 /* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
+
+app.use(cors())
 
 cloudinary.config({
     cloud_name: "dkq3tnpwu",

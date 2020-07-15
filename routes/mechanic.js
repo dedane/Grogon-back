@@ -56,8 +56,8 @@ router.post('/register',upload.single('Certificate','MechanicPic'), async (req,r
                         _id: new mongoose.Types.ObjectId(),
                         Name: req.body.Name,
                         Email: req.body.Email,
-                        Certificate: result.secure_url,
-                        /* MechanicPic: result.secure_url, */
+                        /* Certificate: result.secure_url, */
+                        MechanicPic: result.secure_url,
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })

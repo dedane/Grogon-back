@@ -40,12 +40,13 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
         }
         else {
             bcrypt.hash(req.body.Password, 10, async (err,hash) => {
-                const result = await cloudinary.v2.uploader.upload(req.file.path)
+                const result =  await cloudinary.v2.uploader.upload(req.file.path)
                 if (err){
                     return res.status(500).json({
                         error:err
                     })
-                }
+                
+            }
                 else{
                     const mechanic =  new Mechanic({
                         _id: new mongoose.Types.ObjectId(),
@@ -56,7 +57,7 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                await mechanic.save()
+                return mechanic.save()
                 .then(result => {
                     console.log(result)
                     res.status(201).json({
@@ -69,7 +70,8 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
                         error: err
                     })
                 })
-                }
+                
+            }
             })
         }
     })

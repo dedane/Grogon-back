@@ -56,7 +56,7 @@ router.post('/register',upload.single('Certificate','MechanicPic'), (req,res,nex
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                mechanic.save()
+                await mechanic.save()
                 .then(result => {
                     console.log(result)
                     res.status(201).json({

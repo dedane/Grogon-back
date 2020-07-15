@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:8080/")
     res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-requested-with, Content-Type, Accept, Authorization"
+        "Origin, X-requested-with, content-Type, Accept, Authorization"
     )
     if (req.method === 'Options'){
         res.header("Access-control-Allow-Methods", 'PUT','POST', 'PATCH', 'DELETE', 'GET')

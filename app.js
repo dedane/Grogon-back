@@ -13,10 +13,6 @@ const mechanicRoute = require('./routes/mechanic')
 /* const userRoute = require('./routes/mechanic') */
 require('dotenv').config();
 
-
-/* require('dotenv').config(); */
-
-
 mongoose.Promise = require('bluebird')
 
 mongoose.connect("mongodb+srv://grogon:" + process.env.MONGO_ATLAS_PW + "@cluster0.7wbz0.mongodb.net/GROGON?retryWrites=true&w=majority", {

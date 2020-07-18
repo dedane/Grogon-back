@@ -10,8 +10,6 @@ const cors = require('cors');
 const app = require('../app')
 /* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
-app.use(cors())
-
 cloudinary.config({
     cloud_name: "dkq3tnpwu",
     api_key: "324383398255366",

@@ -36,7 +36,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter})
 router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
-    .then(async mechanic => {
+    .then( async mechanic => {
         const result =  await cloudinary.v2.uploader.upload(req.file.path) 
         if (mechanic.length >= 1){
             return res.status(409).json({
@@ -80,10 +80,11 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
                 }
                 
             }
-            })()
-            .catch( e => { console.error(e) } )
+            })
+            
         }
     })
+    .catch( e => { console.error(e) } )
 })
 
 router.patch('/register/:Id',upload.single('MechanicPic'), async(req,res) => {

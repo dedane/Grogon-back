@@ -43,15 +43,15 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10,  async (err,hash) => {
-                const result =  await cloudinary.v2.uploader.upload(req.file.path)
+            bcrypt.hash(req.body.Password, 10,   async(err,hash) => {
+                const result =  await cloudinary.v2.uploader.upload(req.file.path) 
                 
                 if (err){
                     return res.status(500).json({
                         error:err
                     })
                 
-            }
+                }
                 else{
                     const mechanic =  new Mechanic({
                         _id: new mongoose.Types.ObjectId(),
@@ -62,7 +62,7 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                try{ mechanic.save()
+                try { mechanic.save()
                 
                 .then(result => {
                      console.log(result)
@@ -71,21 +71,16 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
                     })
                 })
             }
-                  catch(error) {
+            catch(error) {
                     console.log(error)
                     res.status(500).json({
-                        error: err
-                    })
-                    res.status(400).json({
-                        error:err
-                    })
-                    res.status(300).json({
                         error: err
                     })
                 }
                 
             }
-            })
+            })()
+            .catch( e => { console.error(e) } )
         }
     })
 })

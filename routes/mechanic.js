@@ -33,18 +33,19 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 
-router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
+router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
-    .then(mechanic => {
+    .then(async mechanic => {
+        const result =  await cloudinary.v2.uploader.upload(req.file.path) 
         if (mechanic.length >= 1){
             return res.status(409).json({
                 message: 'You already are registered mechanic'
             })
         }
         else {
-            bcrypt.hash(req.body.Password, 10,   async(err,hash) => {
-                const result =  await cloudinary.v2.uploader.upload(req.file.path) 
+            bcrypt.hash(req.body.Password, 10,  (err,hash) => {
+                
                 
                 if (err){
                     return res.status(500).json({

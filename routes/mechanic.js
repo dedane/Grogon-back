@@ -37,7 +37,7 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
     .then( async mechanic => {
-        const result =  await cloudinary.v2.uploader.upload(MechanicPic) 
+        const result =  await cloudinary.v2.uploader.upload(req.file.path) 
         
         if (mechanic.length >= 1){
             return res.status(409).json({

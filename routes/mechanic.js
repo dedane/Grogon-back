@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const Mechanic = require('../models/mechanic');
 const cloudinary = require('cloudinary');
-const cors = require('cors');
+
 const app = require('../app')
 /* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
@@ -62,15 +62,16 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                 mechanic.save()
+                try{ mechanic.save()
+                
                 .then(result => {
                      console.log(result)
                     res.status(201).json({
                         message: 'Successfully Registered'
                     })
                 })
-                
-                  .catch(error => {
+            }
+                  catch(error) {
                     console.log(error)
                     res.status(500).json({
                         error: err
@@ -81,7 +82,7 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
                     res.status(300).json({
                         error: err
                     })
-                })
+                }
                 
             }
             })

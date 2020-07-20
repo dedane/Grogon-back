@@ -75,6 +75,12 @@ router.post('/register',upload.single('MechanicPic'), async (req,res,next) => {
                     res.status(500).json({
                         error: err
                     })
+                    res.status(400).json({
+                        error:err
+                    })
+                    res.status(300).json({
+                        error: err
+                    })
                 })
                 
             }

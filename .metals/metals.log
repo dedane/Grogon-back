@@ -37,3 +37,4 @@ INFO: Unsupported notification method: $/setTraceNotification
 2020.07.20 17:22:37 WARN  no build tool detected in workspace '/home/makashima/Documents/code/grogon-back'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 Jul 20, 2020 6:15:44 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTraceNotification
+2020.07.20 19:22:17 INFO  shutting down Metals

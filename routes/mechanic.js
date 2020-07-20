@@ -7,7 +7,7 @@ const multer = require('multer')
 const Mechanic = require('../models/mechanic');
 const cloudinary = require('cloudinary');
 
-const app = require('../app')
+const mechanic = require('../models/mechanic')
 /* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
 /* app.use(cors()) */
@@ -37,7 +37,8 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
     .then( async mechanic => {
-        const result =  await cloudinary.v2.uploader.upload(req.file.path) 
+        const result =  await cloudinary.v2.uploader.upload(MechanicPic) 
+        
         if (mechanic.length >= 1){
             return res.status(409).json({
                 message: 'You already are registered mechanic'
@@ -83,8 +84,10 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
             })
             
         }
+    
     })
-    .catch( e => { console.error(e) } )
+    .catch( e => { console.error(e) } );
+    
 })
 
 router.patch('/register/:Id',upload.single('MechanicPic'), async(req,res) => {

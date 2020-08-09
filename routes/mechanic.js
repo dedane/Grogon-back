@@ -33,11 +33,11 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 
-router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
+router.post('/register',  (req,res,next) => {
     Mechanic.find({ Email: req.body.Email })
     .exec()
-    .then( async mechanic => {
-        const result =  await cloudinary.v2.uploader.upload(req.file.path) 
+    .then(  mechanic => {
+        /* const result =  await cloudinary.v2.uploader.upload(req.file.path)  */
         
         if (mechanic.length >= 1){
             return res.status(409).json({
@@ -60,11 +60,11 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
                         Name: req.body.Name,
                         Email: req.body.Email,
                         /* Certificate: result.secure_url, */
-                        MechanicPic: result.secure_url,
+                        /* MechanicPic: result.secure_url, */
                         Phonenumber: req.body.Phonenumber,
                         Password: hash     
                     })
-                try { mechanic.save()
+                 mechanic.save()
                 
                 .then(result => {
                      console.log(result)
@@ -72,14 +72,13 @@ router.post('/register',upload.single('MechanicPic'),  (req,res,next) => {
                         message: 'Successfully Registered'
                     })
                 })
-            }
-            catch(error) {
+            
+                .catch(error => {
                     console.log(error)
                     res.status(500).json({
                         error: err
                     })
-                }
-                
+                })
             }
             })
             

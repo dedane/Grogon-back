@@ -101,6 +101,7 @@ router.post('/register',upload.single('VehicleImage'),(req,res) => {
 
 })
 
+//cloudinary patches
 /* router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
     const result = await cloudinary.v2.uploader.upload(req.file.path)
     const id = req.params.Id;

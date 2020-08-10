@@ -124,7 +124,7 @@ router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
 })
 router.patch('/register/:Id', (req,res) => {
     const id = req.params.Id;
-    await Driver.updateOne({ _id: id},
+    Driver.updateMany({ _id: id},
     { $set: {Fuel: req.body.Fuel,
             Nextservice: req.body.Nextservice,
             Milleage: req.body.Milleage,

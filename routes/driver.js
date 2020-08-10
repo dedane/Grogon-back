@@ -122,6 +122,31 @@ router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
         })
     })
 })
+router.patch('/register/:Id', (req,res) => {
+    const id = req.params.Id;
+    await Driver.updateOne({ _id: id},
+    { $set: {Fuel: req.body.Fuel,
+            Nextservice: req.body.Nextservice,
+            Milleage: req.body.Milleage,
+            Engineoil: req.body.Engineoil,
+            Batterypower: req.body.Batterypower,
+            Wheelhealth: req.body.Wheelhealth}}
+    )
+    .exec()
+    .then(result => {
+        console.log(result)
+        res.status(200)
+        .json({
+            message: "Successfull Updated"
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({
+                error: error
+            })
+        })
+    })
+})
 
 router.post('/login', (req,res,next) => {
     Driver.find({ Email: req.body.Email })

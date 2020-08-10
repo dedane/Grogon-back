@@ -12,6 +12,12 @@ const DriverSchema = mongoose.Schema({
     VehicleImage: {type: String, required: false},
     PurchaseDate: {type: Date, required: true},
     Carmake: {type: String, required: true},
+    Nextservice: {type: String, required: false},
+    Milleage: {type: String, required: false},
+    Engineoil: {type: String, required: false},
+    Batterypower: {type: String, required: false},
+    Fuel: {type: String, required: false},
+    Wheelhealth: {type: String, required: false},
     Geometry: {type: {
         type: String,
         default: "Point"

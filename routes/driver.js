@@ -101,7 +101,7 @@ router.post('/register',upload.single('VehicleImage'),(req,res) => {
 
 })
 
-router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
+/* router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
     const result = await cloudinary.v2.uploader.upload(req.file.path)
     const id = req.params.Id;
     await Driver.updateOne({ _id: id},
@@ -121,7 +121,7 @@ router.patch('/register/:Id',upload.single('VehicleImage'), async(req,res) => {
             })
         })
     })
-})
+}) */
 router.patch('/register/:Id', (req,res) => {
     const id = req.params.Id;
     Driver.updateMany({ _id: id},

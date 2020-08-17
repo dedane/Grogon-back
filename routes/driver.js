@@ -123,7 +123,7 @@ router.post('/register',upload.single('VehicleImage'),(req,res) => {
         })
     })
 }) */
-router.put('/register/:Id', (req,res) => {
+router.patch('/register/:Id', (req,res) => {
     const id = req.params.Id;
     Driver.updateMany({ _id: id},
     { $set: {Fuel: req.body.Fuel,

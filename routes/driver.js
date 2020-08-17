@@ -125,7 +125,7 @@ router.post('/register',upload.single('VehicleImage'),(req,res) => {
 }) */
 router.patch('/register/:Id', (req,res) => {
     const id = req.params.Id;
-    Driver.updateMany({ _id: id},
+    Driver.updateMany({ _id: objectId(id)},
     { $set: {Fuel: req.body.Fuel,
             Nextservice: req.body.Nextservice,
             Milleage: req.body.Milleage,

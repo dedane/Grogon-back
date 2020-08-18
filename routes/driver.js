@@ -6,6 +6,7 @@ const jwt =require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Driver = require('../models/driver');
 const cloudinary = require('cloudinary');
+const ObjectId = mongoose.Types.ObjectId;
 /* const { CloudinaryStorage } = require('multer-storage-cloudinary'); */
 
 cloudinary.config({
@@ -125,7 +126,7 @@ router.post('/register',upload.single('VehicleImage'),(req,res) => {
 }) */
 router.patch('/register/:Id', (req,res) => {
     const id = req.params.Id;
-    Driver.updateMany({ _id: id},
+    Driver.updateMany({ _id: ObjectId(id)},
     { $set: {Fuel: req.body.Fuel,
             Nextservice: req.body.Nextservice,
             Milleage: req.body.Milleage,
